@@ -19,7 +19,7 @@ type DummyApp struct {
 
 type MyData struct {
 	Name string     `validate:"alphanumeric"`
-	Apps []DummyApp `required:"true"` // length > 0;
+	Apps []DummyApp `required:"true"` // length > 0
 }
 
 func TestExample(t *testing.T) {

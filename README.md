@@ -50,10 +50,19 @@ import (
 )
 
 type DummyApp struct {
-	Description string   `validate_regex:"^[-a-z_.:;\\s]*$"`        // tag-specific regex
-	Domains     []string `validate:"domain" required:"true"`        // length > 0; every entry is validated
-	Enabled     *bool    `required:"true"`                          // Tip: *bool allows for a null-value
-	ListenIP    string   `validate:"ip" required_if:"Enabled=true"` // conditionally required
+    // tag-specific regex
+	Description string   `validate_regex:"^[-a-z_.:;\\s]*$"`
+
+    // length > 0; every entry is validated
+	Domains     []string `validate:"domain" required:"true"`
+
+	// Tip: *bool allows for a null-value
+	Enabled     *bool    `required:"true"`
+
+	// conditionally required
+	ListenIP    string   `validate:"ip" required_if:"Enabled=true"`
+
+	Options     []string `required:"true" validate:"my_custom_validator"`
 }
 
 type MyData struct {
