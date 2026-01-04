@@ -55,39 +55,39 @@ func (v *StructValidator) Validate(s interface{}) []error {
 		field := val.Field(i)
 		fieldType := val.Type().Field(i)
 
-		// --- 1. Handle Nested Structs/Pointers (Recursive) ---
+		// handle Nested Structs/Pointers (Recursive)
 		// If handled, we skip all other checks for this field.
 		if nestedErrs, handled := v.validateNestedField(field, fieldType); handled {
 			errors = append(errors, nestedErrs...)
 			continue
 		}
 
-		// --- 2. Handle "required" tag ---
+		// handle "required" tag
 		if err := v.checkRequiredField(field, fieldType); err != nil {
 			errors = append(errors, err)
 			continue // Field is required but empty, skip other checks
 		}
 
-		// --- 3. Handle "required_if" tag ---
+		// handle "required_if" tag
 		if err := v.checkRequiredIfField(field, fieldType, val); err != nil {
 			errors = append(errors, err)
 			continue // Field is required_if but empty, skip other checks
 		}
 
-		// --- 4. Not required => skip empty ---
+		// nNot required => skip empty
 		// NOTE: fields with explicit default-values will not be skipped
 		if isFieldUnset(field) {
 			continue
 		}
 
-		// --- 5. Handle Slice/Array Element Validation ---
+		// handle Slice/Array Element Validation
 		// This validates elements *inside* the slice.
 		// We don't 'continue' here, as the slice itself might be 'required'.
 		if sliceErrs := v.validateSliceField(field, fieldType); sliceErrs != nil {
 			errors = append(errors, sliceErrs...)
 		}
 
-		// --- 6. Handle "validate" tags (for NON-SLICE, non-struct fields) ---
+		// handle "validate" tags (for NON-SLICE, non-struct fields)
 		// Skips fields that are containers (struct, slice) or empty/non-required.
 		if simpleErrs := v.validateSimpleField(field, fieldType); simpleErrs != nil {
 			errors = append(errors, simpleErrs...)
