@@ -11,7 +11,7 @@ We, like most, have to validate struct-values after loading data - like a config
 
 To keep the validation-logic clean we want to define those validators inside the struct-tags.
 
-Its usage is similar to [creasty/defaults](github.com/creasty/defaults) - which can be used to set default values.
+Its usage is similar to [creasty/defaults](https://github.com/creasty/defaults) - which can be used to set default values.
 
 ----
 
@@ -165,6 +165,7 @@ func LoadConfig(path string) (*ConfigFile, error) {
 		return nil, err
 	}
 
+    // see: github.com/creasty/defaults
 	if err := defaults.Set(&cnf); err != nil {
 	    return &cnf, fmt.Errorf("Failed to set config-defaults: %v", err)
 	}
